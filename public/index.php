@@ -1,5 +1,8 @@
 <?php
 
+if (ini_get('zlib.output_compression')) {
+    ini_set('zlib.output_compression',false);
+}
 // Path to the front controller (this file)
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 
