@@ -18,10 +18,10 @@
 />
 </head>
 <body>
-<div class="container">
-<form>
+<div class="container p-4" style="max-width: 350px;">
+<form class="container mt-4" action="/">
   <!-- Email input -->
-  <div class="form-outline mb-4">
+  <div class="form-outline mb-4 mt-4">
     <input type="email" id="form1Example1" class="form-control" />
     <label class="form-label" for="form1Example1">Email address</label>
   </div>
