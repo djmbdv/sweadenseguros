@@ -19,16 +19,20 @@
 </head>
 <body>
 <div class="container p-4" style="max-width: 350px;">
-<form class="container mt-4" action="/">
+<form class="container mt-4" action="/login" method="post">
   <!-- Email input -->
+  <?php if(session()->getFlashdata('msg')):?>
+                    <div class="alert alert-warning">
+                       <?= session()->getFlashdata('msg') ?>
+                    </div>
+                    <?php endif;?>
   <div class="form-outline mb-4 mt-4">
-    <input type="email" id="form1Example1" class="form-control" />
-    <label class="form-label" for="form1Example1">Email address</label>
+    <input type="text" id="form1Example1" name="user" class="form-control" />
+    <label class="form-label" for="form1Example1">User</label>
   </div>
-
   <!-- Password input -->
   <div class="form-outline mb-4">
-    <input type="password" id="form1Example2" class="form-control" />
+    <input type="password" id="form1Example2" name="password" class="form-control" />
     <label class="form-label" for="form1Example2">Password</label>
   </div>
 
