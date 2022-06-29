@@ -38,7 +38,8 @@ $routes->set404Override();
 $routes->get('/', 'Home::index',['filter' => 'authGuard']);
 $routes->post('/login', 'LoginController::loginAuth');
 $routes->get('/login', 'LoginController::index');
-
+$routes->post('/', 'Home::save');
+$routes->get('poliza/(:num)', 'Home::poliza/$1');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

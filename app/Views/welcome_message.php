@@ -23,6 +23,8 @@
     padding-top: 14px;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
 </head>
 <body>
   <!-- Navbar -->
@@ -47,7 +49,7 @@
       <!-- Navbar brand -->
       <a class="navbar-brand mt-2 mt-lg-0" href="#">
         <img
-          src="icon.jpg"
+          src="/icon.jpg"
           height="50"
           alt="MDB Logo"
           loading="lazy"
@@ -92,12 +94,18 @@
   <!-- Container wrapper -->
 </nav>
 <!-- Navbar -->
-<div class="container">
+<div class="container" ng-app="polizas">
 
-  <div class="row">
+  <div class="row" ng-controller="polizaController" data-ng-init="reset()">
   <div class="col-3">
   <h2>Historial</h2>
-
+  <div class="row">
+    <?php foreach($polizas as $p): ?>
+    <div>
+      <a href="/poliza/<?=$p["poliza"] ?>"><?= $p["poliza"] ?></a>
+    </div>
+    <?php endforeach;?>
+  </div>
   </div>
 <div class="col-9">
 <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
@@ -149,7 +157,7 @@
     aria-labelledby="ex1-tab-1"
   >
 
-<form>
+<form ng-submit="submitPolizaForm()">
 
 <div>
     <h2>Nueva Poliza</h2>
@@ -158,7 +166,7 @@
 <div class="row">
 <section class="p-4  w-100">
       <button type="button" class="btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
-      <button type="button" class="btn btn-outline-warning"><i class="fas fa-save"></i> Guardar</button>
+      <button type="submit" class="btn btn-outline-warning"><i class="fas fa-save"></i> Guardar</button>
     </section>
 </div>
 
@@ -167,98 +175,156 @@
   <div class="row gp">
 
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example3" class="form-control" />
+    <input type="number" id="form6Example3" ng-model="poliza.poliza" class="form-control" required <?= isset($poliza)?"readonly ng-init='poliza.poliza=".$poliza['poliza']."'":"" ?> />
     <label class="form-label" for="form6Example3">POLIZA</label>
   </div>
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example3" class="form-control" />
+    <input type="number" id="form6Example3" ng-model="poliza.aplicacion" class="form-control" required/>
     <label class="form-label" for="form6Example3">APLICACION</label>
   </div>
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example3" class="form-control" />
+    <input type="text" id="form6Example3" ng-model="poliza.a_favor" class="form-control" required/>
     <label class="form-label" for="form6Example3">A FAVOR DE</label>
   </div>
   <!-- Text input -->
-  <div class="form-outline col  m-1 mb-4 datepicker">
-    <input type="text" class="form-control" />
-    <label class="form-label" for="form6Example4">DESDE</label>
+  <div class="form-group col  m-1 mb-4">
+    <select  ng-model="poliza.desde" class="select" required>
+    <?php
+        foreach($paises as $p):
+      ?>
+      <option value="<?=$p?>"><?= $p ?></option>
+      <?php endforeach;?>
+    </select>
+    <label class="form-label select-label" for="form6Example4">DESDE</label>
   </div>
-  <div class="form-outline col  m-1 mb-4 datepicker">
-    <input type="text" id="form6Example5" class="form-control" />
-    <label class="form-label" for="form6Example5">HASTA:</label>
+  <div class="form-group col  m-1 mb-4">
+    <select  ng-model="poliza.hasta" id="form6Example5" class="select" required >
+      <?php
+        foreach($paises as $p):
+      ?>
+      <option value="<?=$p?>"><?= $p ?></option>
+      <?php endforeach;?>
+    </select>
+    <label class="form-label select-label" for="form6Example5">HASTA:</label>
   </div>
   </div>
   <div class="row gp">
     <div class="form-group col mb-4 m-1">
-      <select id="hola" class="select" style="display: inline;">
-            
-                    <option value="2">CAMION</option>
-                    <option value="3">VAPOR</option>
-                    <option value="4">AVION</option>
+      <select id="sobre" class="select" ng-model="poliza.sobre" style="display: inline;" required>
+                    <option value="CAMION">CAMION</option>
+                    <option value="VAPOR">VAPOR</option>
+                    <option value="AVION">AVION</option>
                   </select>
     <label class="form-label select-label" for="hola">SOBRE EL</label>
     </div>
   <div class="form-outline col  m-1 mb-4 datepicker">
-    <input type="text" id="form6Example5" class="form-control" />
+    <input type="text" id="form6Example5" ng-model="poliza.anunciado" class="form-control" required/>
     <label class="form-label" for="form6Example5">ANUNCIADO PARA:</label>
   </div>
   </div>
   <div class="row gp">
   <div class="form-outline col-8  m-1 mb-4">
-    <input type="text" id="form6Example5" class="form-control" />
+    <input type="text" id="form6Example5" ng-model="poliza.lugar" class="form-control" required/>
     <label class="form-label" for="form6Example5">LUGAR Y FECHA</label>
   </div>
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example5" class="form-control" />
+    <input type="text" id="form6Example5" ng-model="poliza.marca" class="form-control" required/>
     <label class="form-label" for="form6Example5">MARCA</label>
   </div>
   </div>
   <div class="row gp">
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example5" class="form-control" />
-    <label class="form-label" for="form6Example5">NOS</label>
+    <input type="number" id="nos" ng-model="poliza.nos" class="form-control" required/>
+    <label class="form-label" for="nos">NOS</label>
   </div>
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example5" class="form-control" />
-    <label class="form-label" for="form6Example5">PESO BRUTO</label>
+    <input type="number" min="0"  ng-model="poliza.peso"  step="0.01" id="peso" class="form-control" required/>
+    <label class="form-label" for="peso">PESO BRUTO</label>
   </div>
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example5" class="form-control" />
+    <input type="number" id="form6Example5" ng-model="poliza.bultos" min="0" class="form-control" required/>
     <label class="form-label" for="form6Example5">CANTIDAD DE BULTOS</label>
   </div>
   </div>
   <div class="row gp">
-  <div class="col  m-1 mb-4">
+  <div class="col  m-1 mb-4"  required>
   <label class="form-label" for="form6Example5">CONTENIDO</label>
 <br/>
     <small>SEGÚN FACTURA O INVOICE ADJUNTO</small>
-    <input style="display: inline-block;width:40%;" class="form-control" type="text" id="form6Example5"  />
+    <input style="display: inline-block;width:40%;" ng-model="poliza.contenido" class="form-control" type="text" id="form6Example5"  required/>
     <small>MERCADERIAS EN GENERAL</small>
   </div>
   </div>
   <div class="row gp">
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example5" class="form-control" />
-    <label class="form-label" for="form6Example5">VALOR ASEGURADO</label>
+    <input type="number" id="asegurado" step="0.01" min="0" ng-model="poliza.asegurado" class="form-control" required />
+    <label class="form-label" for="asegurado">VALOR ASEGURADO</label>
   </div>
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example5" class="form-control" />
-    <label class="form-label" for="form6Example5">%</label>
+    <input type="number" id="porcentaje" step="0.01" min="0" ng-model="poliza.porcentaje" class="form-control" />
+    <label class="form-label"  for="porcentaje">%</label>
   </div>
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example5" class="form-control" />
-    <label class="form-label" for="form6Example5">PRIMA</label>
+    <input type="number" id="dde" step="0.01" min="0" ng-model="poliza.dde" class="form-control" />
+    <label class="form-label"  for="dde">Derechos de Emision</label>
   </div>
   </div>
+  <div class="row gp">
+    <label>PRIMA</label>
+    <table class="table table-sm">
+      <tr>
+        <td>SUMA ASEGURADA</td><td>{{ poliza.asegurado }}</td>
+      </tr>
+      <tr>
+        <td>TASA ({{poliza.porcentaje}}%)</td><td>{{ poliza.porcentaje}}%</td>
+      </tr>
+      <tr>
+        <td>PRIMA NETA</td>
+        <td ng-bind="prima_neta=(poliza.asegurado * poliza.porcentaje/100.0)| number:2"></td>
+      </tr>
+      <tr>
+        <td>C.S.C.V.S ({{poliza.cscvs*100 | number:2}}%)</td><td ng-bind="cscvs=(prima_neta * poliza.cscvs) | number:2"></td>
+      </tr>
+      <tr>
+        <td>S.S.C. ({{poliza.ssc*100 |number:2}}%)</td><td ng-bind="ssc=(prima_neta * poliza.ssc)| number:2"></td>
+      </tr>
+      <tr>
+        <td>DERECHOS DE EMISION ({{poliza.dde |number:2}}%)</td><td ng-bind="dde=(prima_neta * poliza.dde)| number:2"></td>
+      </tr>
+      <tr>
+        <td>SUBTOTAL</td><td ng-bind="subtotal=(dde+prima_neta+cscvs+ssc) | number:2"></td>
+      <tr>
+        <td>IVA ({{poliza.iva*100}}%)</td><td ng-bind="iva=(subtotal*poliza.iva) | number:2">0</td>
+      </tr>
+      <tr>
+        <td><b>TOTAL</b></td><td ng-bind="total=(subtotal+iva) | number:2">0</td>
+      </tr>
+    </table>
+  </div>
+  <div class="row gp">
+  <div class="form-outline col  m-1 mb-4">
+    <textarea class="form-control" id="exampleFormControlTextarea3" ng-model="poliza.observaciones" rows="3"></textarea>  
+    <label class="form-label" for="form6Example5">OBSERVACIONES</label>
+  </div>
+  <div class="form-outline col  m-1 mb-4">
+    <input type="text" id="form6Example5" ng-model="poliza.embarcado_por" class="form-control" required/>
+    <label class="form-label" for="form6Example5">EMBARCADO POR</label>
+  </div>
+  
+  </div>
+  
   <!-- Message input -->
-
+  <input type="hidden" ng-model="poliza.cscvs" ng-init="poliza.cscvs=0.035">
+  <input type="hidden" ng-model="poliza.ssc" ng-init="poliza.ssc=0.005">
+  <input type="hidden" ng-model="poliza.iva" ng-init="poliza.iva=0.12">
+  <input type="hidden" ng-model="poliza.dde" ng-init="poliza.dde=0.13">
 </form>
   </div>
   <div class="tab-pane fade" id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
   <div class="row pt-4">
-  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i> Documento1</a></div>
-  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i> Documento2</a></div>
-  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i> Documento3</a></div>
+  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento1</a></div>
+  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento2</a></div>
+  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento3</a></div>
 </div>
 </div>
   <div class="tab-pane fade" id="ex1-tabs-3" role="tabpanel" aria-labelledby="ex1-tab-3">
@@ -272,6 +338,47 @@
  <h4>COPYRIGHT <?= date("Y") ?> &copy; todos los derechos reservados SWADEN S.A.</h4>
 </footer>
 <!-- MDB -->
+<script>
+var app = angular.module('polizas', []);
+
+app.controller("polizaController", function ($scope, $http) {
+    $scope.poliza_clean = {
+      poliza: "<?= isset($poliza)?$poliza["poliza"]:""?>",
+      aplicacion: "<?= isset($poliza)?$poliza["aplicacion"]:""?>",
+      a_favor: "<?= isset($poliza)?$poliza["a_favor"]:""?>",
+      desde: "<?= isset($poliza)?$poliza["desde"]:""?>",
+      hasta: "<?= isset($poliza)?$poliza["hasta"]:""?>",
+      sobre:"<?= isset($poliza)?$poliza["sobre"]:""?>",
+      anunciado: "<?= isset($poliza)?$poliza["anunciado"]:""?>",
+      lugar: "<?= isset($poliza)?$poliza["lugar"]:""?>",
+      marca: "<?= isset($poliza)?$poliza["marca"]:""?>",
+      nos: "<?= isset($poliza)?$poliza["nos"]:""?>",
+      peso: "<?= isset($poliza)?$poliza["peso"]:""?>",
+      bultos: "<?= isset($poliza)?$poliza["bultos"]:""?>",
+      contenido: "<?= isset($poliza)?$poliza["contenido"]:""?>",
+      asegurado: "<?= isset($poliza)?$poliza["asegurado"]:""?>",
+      porcentaje: "<?= isset($poliza)?$poliza["porcentaje"]:""?>",
+      observaciones:"<?= isset($poliza)?$poliza["observaciones"]:""?>",
+      embarcado_por: "<?= isset($poliza)?$poliza["embarcado_por"]:""?>",
+    };
+
+    $scope.reset = ()=>{
+      $scope.poliza = angular.copy($scope.poliza_clean);
+    }
+    $scope.submitPolizaForm = function () {
+        const onSuccess =  (data, status, headers, config)=> {
+            console.log(data)
+        };
+        var onError = function (data, status, headers, config) {
+            alert('Error occured.');
+        }
+        $http.post('/', { ...$scope.poliza })
+            .then(onSuccess)
+            .catch(onError);
+    };
+    
+})
+</script>
 <script
   type="text/javascript"
   src="/js/mdb.min.js"
