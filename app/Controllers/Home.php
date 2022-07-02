@@ -3,6 +3,12 @@
 namespace App\Controllers;
 
 use App\Models\Poliza;
+use setasign\Fpdi\Fpdi;
+use setasign\Fpdi\PdfReader;
+
+use chillerlan\QRCode\{QRCode, QROptions};
+use chillerlan\QRCode\Data\QRMatrix;
+use chillerlan\QRCode\Common\EccLevel;
 
 class Home extends BaseController
 {
@@ -15,7 +21,6 @@ class Home extends BaseController
 
     }
     public function login(){
-
         return view('login');
     }
 
@@ -50,7 +55,182 @@ class Home extends BaseController
             "iva" => $this->request->getVar("iva"),
             "dde" => $this->request->getVar("dde")
         ];
-        $polizaModel->insert($data);
-        print_r($data);
+        $p = $polizaModel->find($data["poliza"]);
+        if(is_null($p))
+            $k = $polizaModel->insert($data);
+        else {
+            $poliza = $this->request->getVar('poliza');
+            $data = [
+                "aplicacion" => $this->request->getVar('aplicacion'),
+                "a_favor" => $this->request->getVar('a_favor'),
+                "desde" => $this->request->getVar("desde"),
+                "hasta" => $this->request->getVar("hasta"),
+                "sobre" => $this->request->getVar("sobre"),
+                "anunciado" => $this->request->getVar("anunciado"),
+                "lugar" => $this->request->getVar("lugar"),
+                "marca" => $this->request->getVar("marca"),
+                "nos" => $this->request->getVar("nos"),
+                "peso" => $this->request->getVar("peso"),
+                "bultos" => $this->request->getVar("bultos"),
+                "contenido" => $this->request->getVar("contenido"),
+                "asegurado" => $this->request->getVar("asegurado"),
+                "porcentaje" => $this->request->getVar("porcentaje"),
+                "embarcado_por" => $this->request->getVar("embarcado_por"),
+                "cscvs" => $this->request->getVar("cscvs"),
+                "ssc" => $this->request->getVar("ssc"),
+                "iva" => $this->request->getVar("iva"),
+                "dde" => $this->request->getVar("dde"),
+                "observaciones" => $this->request->getVar("observaciones")
+            ];
+            $k = $polizaModel->update($poliza,$data);
+            $r = [
+                "data"=> $data,
+                "message"=>"guardado",
+                "k" => $poliza
+            ];
+            return $this->response->setJSON($r);
+        }
+        $r = [
+            "data"=> $data,
+            "message"=>"Ingresado nuevo #".$data["poliza"],
+            "k" => $data["poliza"]
+        ];
+        return $this->response->setJSON($r);
+    }
+    public function pdf1($polizaId){
+        $polizaModel = new \App\Models\PolizaModel();
+        $p = $polizaModel->find($polizaId);
+        $pdf = new Fpdi();
+
+        $pageCount = $pdf->setSourceFile(FCPATH.'formato_sweaden.pdf');
+        $pageId = $pdf->importPage(1, PdfReader\PageBoundaries::MEDIA_BOX);
+
+        $pdf->addPage();
+        $pdf->useTemplate($pageId,['adjustPageSize' => true]);
+        $pdf->SetFont('Helvetica');
+        $pdf->SetXY(30, 36);
+        $pdf->SetFontSize(10);
+        $pdf->Write(8, $p["poliza"]);
+        $pdf->SetXY(260, 36);
+        $pdf->Write(8, $p["aplicacion"]);
+        $pdf->SetXY(200, 44);
+        $pdf->Write(6, $p["a_favor"]);
+        $pdf->SetXY(170, 50);
+        $pdf->Write(6, $p["desde"]);
+        $pdf->SetXY(30, 56);
+        $pdf->Write(6, $p["hasta"]);
+        $pdf->SetXY(180, 56);
+        $pdf->Write(6, $p["sobre"]);
+        $pdf->SetXY(45, 61);
+        $pdf->Write(6, $p["anunciado"]);
+        $pdf->SetXY(150, 67);
+        $pdf->Write(6, $p["lugar"]);
+        $pdf->SetFont('Times');
+        $pdf->SetXY(15, 85);
+        $pdf->Write(6, $p["marca"]);
+        $pdf->SetXY(43, 85);
+        $pdf->Write(6, $p["nos"]);
+        $pdf->SetXY(59, 85);
+        $pdf->Write(6, $p["peso"]);
+        $pdf->SetXY(80, 85);
+        $pdf->Write(6, $p["bultos"]);
+        $pdf->SetXY(105, 85);
+        $pdf->Write(6, $p["contenido"]);
+        $pdf->SetXY(145, 85);
+        $pdf->Write(6, $p["asegurado"]);
+        $pdf->SetXY(186, 85);
+        $pdf->Write(6, $p["porcentaje"]);
+        $pdf->SetXY(202, 85);
+        $pdf->Write(6, $p["porcentaje"]);
+        $pdf->SetXY(232, 85);
+        $pdf->Write(6, $p["observaciones"]);
+
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $pdf->Output('I', 'generated.pdf');
+    }
+
+    public function pdf2($polizaId){
+        $img_file = 'tempimg.png';
+
+        $dataURI    = (new QRCode)->render("https://".base_url()."/verify/".md5($polizaId));
+        $dataPieces = explode(',',$dataURI);
+        $encodedImg = $dataPieces[1];
+        $decodedImg = base64_decode($encodedImg);
+
+        //  Check if image was properly decoded
+        if( $decodedImg!==false )
+        {
+            //  Save image to a temporary location
+            if( file_put_contents($img_file,$decodedImg)!==false )
+            {
+                //  Open new PDF document and print image
+                $polizaModel = new \App\Models\PolizaModel();
+                $p = $polizaModel->find($polizaId);
+                if(!isset($p["poliza"]))return;
+                $pdf = new Fpdi();
+        
+                $pageCount = $pdf->setSourceFile(FCPATH.'pf.pdf');
+                $pageId = $pdf->importPage(1, PdfReader\PageBoundaries::MEDIA_BOX);
+        
+                $pdf->addPage();
+                $pdf->useTemplate($pageId,['adjustPageSize' => true]);
+                $pdf->SetXY(10, 10);
+                $pdf->Image($img_file,null,null,20,20);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $pdf->Output('I', 'u.pdf');
+
+                //  Delete image from server
+                unlink($img_file);
+            }
+        }
+
+    }
+    public function pdf3($polizaId){        $img_file = 'tempimg.png';
+
+        $dataURI    = (new QRCode)->render("https://".base_url()."/verify/".md5($polizaId));
+        $dataPieces = explode(',',$dataURI);
+        $encodedImg = $dataPieces[1];
+        $decodedImg = base64_decode($encodedImg);
+
+        //  Check if image was properly decoded
+        if( $decodedImg!==false )
+        {
+            //  Save image to a temporary location
+            if( file_put_contents($img_file,$decodedImg)!==false )
+            {
+                //  Open new PDF document and print image
+                
+                $polizaModel = new \App\Models\PolizaModel();
+                $p = $polizaModel->find($polizaId);
+                if(!isset($p["poliza"]))return;
+                $pdf = new Fpdi();
+        
+                $pageCount = $pdf->setSourceFile(FCPATH.'pr.pdf');
+                $pageId = $pdf->importPage(1, PdfReader\PageBoundaries::MEDIA_BOX);
+        
+                $pdf->addPage();
+                $pdf->useTemplate($pageId,['adjustPageSize' => true]);
+                $pdf->SetXY(16, 8);
+                $pdf->Image($img_file,null,null,20,20);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $pdf->Output('I', 'u.pdf');
+
+                //  Delete image from server
+                unlink($img_file);
+            }
+        }
+    }
+    public function polizas($pagination = 1){
+        $polizaModel =  new \App\Models\PolizaModel();
+        $polizas = $polizaModel->findAll();
+ 
+    
+         $this->response->setJSON(true);
+        echo json_encode($polizas);
+    }
+    public function verify($code){
+        $polizaModel = new \App\Models\PolizaModel();
+        $p = $polizaModel->where('md5(poliza)',$code)->first();
+        print_r($p);
     }
 }

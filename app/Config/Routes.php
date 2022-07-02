@@ -39,9 +39,14 @@ $routes->get('/', 'Home::index',['filter' => 'authGuard']);
 $routes->post('/login', 'LoginController::loginAuth');
 $routes->get('/login', 'LoginController::index');
 $routes->post('/', 'Home::save');
-$routes->get('poliza/(:num)', 'Home::poliza/$1');
+$routes->get('/poliza/(:num)', 'Home::poliza/$1');
+$routes->get('/pdf1/(:num)', 'Home::pdf1/$1');
+$routes->get('/pdf2/(:num)', 'Home::pdf2/$1');
+$routes->get('/pdf3/(:num)', 'Home::pdf3/$1');
+$routes->get('/verify/(:any)', 'Home::verify/$1');
+$routes->get('/polizas/(:num)', 'Home::polizas/$1');
 /*
- * --------------------------------------------------------------------
+ * -------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------
  *

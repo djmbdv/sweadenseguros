@@ -99,6 +99,10 @@
   <div class="row" ng-controller="polizaController" data-ng-init="reset()">
   <div class="col-3">
   <h2>Historial</h2>
+  <div>
+      <a href="/">NUEVO</a>
+    </div>
+    <poliza-list></poliza-list>
   <div class="row">
     <?php foreach($polizas as $p): ?>
     <div>
@@ -133,18 +137,7 @@
       >DOCUMENTOS</a
     >
   </li>
-  <li class="nav-item" role="presentation">
-    <a
-      class="nav-link"
-      id="ex1-tab-3"
-      data-mdb-toggle="tab"
-      href="#ex1-tabs-3"
-      role="tab"
-      aria-controls="ex1-tabs-3"
-      aria-selected="false"
-      >CONSULTA</a
-    >
-  </li>
+
 </ul>
 <!-- Tabs navs -->
 
@@ -160,7 +153,7 @@
 <form ng-submit="submitPolizaForm()">
 
 <div>
-    <h2>Nueva Poliza</h2>
+    <h2><?=isset($poliza)?"Poliza #".$poliza['poliza']:"Nueva Poliza" ?></h2>
 </div>
   
 <div class="row">
@@ -307,8 +300,8 @@
     <label class="form-label" for="form6Example5">OBSERVACIONES</label>
   </div>
   <div class="form-outline col  m-1 mb-4">
-    <input type="text" id="form6Example5" ng-model="poliza.embarcado_por" class="form-control" required/>
-    <label class="form-label" for="form6Example5">EMBARCADO POR</label>
+    <input type="text" id="embarcado_por" ng-model="poliza.embarcado_por" class="form-control" required/>
+    <label class="form-label" for="embarcado_por">EMBARCADO POR</label>
   </div>
   
   </div>
@@ -317,19 +310,15 @@
   <input type="hidden" ng-model="poliza.cscvs" ng-init="poliza.cscvs=0.035">
   <input type="hidden" ng-model="poliza.ssc" ng-init="poliza.ssc=0.005">
   <input type="hidden" ng-model="poliza.iva" ng-init="poliza.iva=0.12">
-  <input type="hidden" ng-model="poliza.dde" ng-init="poliza.dde=0.13">
 </form>
   </div>
   <div class="tab-pane fade" id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
   <div class="row pt-4">
-  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento1</a></div>
-  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento2</a></div>
-  <div class="col text-center"><a href="#"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento3</a></div>
+  <div class="col text-center"><a href="/pdf1/<?=$poliza["poliza"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento</a></div>
+  <div class="col text-center"><a href="/pdf2/<?=$poliza["poliza"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>FRONTAL</a></div>
+  <div class="col text-center"><a href="/pdf3/<?=$poliza["poliza"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>REVERSO</a></div>
 </div>
 </div>
-  <div class="tab-pane fade" id="ex1-tabs-3" role="tabpanel" aria-labelledby="ex1-tab-3">
-    Tab 3 content
-  </div>
 </div>
 </div>
   </div>
@@ -340,11 +329,42 @@
 <!-- MDB -->
 <script>
 var app = angular.module('polizas', []);
+/*
+app.
+  component('polizaList', {
+    template:
+        '<ul>kjj' +
+          '<li ng-repeat="phone in $ctrl.phones">' +
+            '<span>{{p.poliza}}jj</span>' +
+            '<p></p>' +
+          '</li>' +
+        '</ul>',
+    controller: function PhoneListController(){
+      //const res = 
+     // const json = await res.json();
+      //console.log(json)
+      //this.kk = [...json];
+       fetch("/polizas/"+0).then(s =>{
+        $ctrl.phones = [
+          {
+            name: 'Nexus S',
+            snippet: 'Fast just got faster with Nexus S.'
+          }, {
+            name: 'Motorola XOOM™ with Wi-Fi',
+            snippet: 'The Next, Next Generation tablet.'
+          }, {
+            name: 'MOTOROLA XOOM™',
+            snippet: 'The Next, Next Generation tablet.'
+          }
+        ];})
+    }
+  });*/
+
 
 app.controller("polizaController", function ($scope, $http) {
     $scope.poliza_clean = {
-      poliza: "<?= isset($poliza)?$poliza["poliza"]:""?>",
-      aplicacion: "<?= isset($poliza)?$poliza["aplicacion"]:""?>",
+      poliza: <?= isset($poliza)?$poliza["poliza"]:"''"?>,
+      aplicacion: <?= isset($poliza)?$poliza["aplicacion"]:"''"?>,
       a_favor: "<?= isset($poliza)?$poliza["a_favor"]:""?>",
       desde: "<?= isset($poliza)?$poliza["desde"]:""?>",
       hasta: "<?= isset($poliza)?$poliza["hasta"]:""?>",
@@ -352,25 +372,33 @@ app.controller("polizaController", function ($scope, $http) {
       anunciado: "<?= isset($poliza)?$poliza["anunciado"]:""?>",
       lugar: "<?= isset($poliza)?$poliza["lugar"]:""?>",
       marca: "<?= isset($poliza)?$poliza["marca"]:""?>",
-      nos: "<?= isset($poliza)?$poliza["nos"]:""?>",
-      peso: "<?= isset($poliza)?$poliza["peso"]:""?>",
-      bultos: "<?= isset($poliza)?$poliza["bultos"]:""?>",
+      nos: <?= isset($poliza)?$poliza["nos"]:"''"?>,
+      peso: <?= isset($poliza)?$poliza["peso"]:"''"?>,
+      bultos: <?= isset($poliza)?$poliza["bultos"]:"''"?>,
       contenido: "<?= isset($poliza)?$poliza["contenido"]:""?>",
-      asegurado: "<?= isset($poliza)?$poliza["asegurado"]:""?>",
-      porcentaje: "<?= isset($poliza)?$poliza["porcentaje"]:""?>",
+      asegurado: <?= isset($poliza)?$poliza["asegurado"]:"''"?>,
+      porcentaje: <?= isset($poliza)?$poliza["porcentaje"]:"''"?>,
       observaciones:"<?= isset($poliza)?$poliza["observaciones"]:""?>",
       embarcado_por: "<?= isset($poliza)?$poliza["embarcado_por"]:""?>",
+      iva: <?= isset($poliza)?$poliza["iva"]:"''"?>,
+      ssc: <?= isset($poliza)?$poliza["ssc"]:"''"?>,
+      dde: <?= isset($poliza)?$poliza["dde"]:"''"?>,
     };
 
     $scope.reset = ()=>{
       $scope.poliza = angular.copy($scope.poliza_clean);
     }
     $scope.submitPolizaForm = function () {
+        console.log($scope.poliza);
         const onSuccess =  (data, status, headers, config)=> {
-            console.log(data)
+            alert(data.data.message);
+            if(data.data.message !== "guardado"){
+              console.log(data.data)
+              window.location = "/"+data.data.data.k;
+            }
         };
         var onError = function (data, status, headers, config) {
-            alert('Error occured.');
+            alert('Error');
         }
         $http.post('/', { ...$scope.poliza })
             .then(onSuccess)
