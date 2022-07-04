@@ -32,7 +32,9 @@ class Home extends BaseController
         return view('welcome_message',["paises"=> $paises, "polizas" => $polizas, "poliza"=>$poliza]);
     }
     public function save(){
+        $db = \Config\Database::connect();
         $polizaModel = new \App\Models\PolizaModel();
+        $scaped =  $db->escapeString( $this->request->getVar("anunciado"));
         $data = [
             "poliza" => $this->request->getVar('poliza'),
             "aplicacion" => $this->request->getVar('aplicacion'),
@@ -40,7 +42,7 @@ class Home extends BaseController
             "desde" => $this->request->getVar("desde"),
             "hasta" => $this->request->getVar("hasta"),
             "sobre" => $this->request->getVar("sobre"),
-            "anunciado" => $this->request->getVar("anunciado"),
+            "anunciado" => $scaped,
             "lugar" => $this->request->getVar("lugar"),
             "marca" => $this->request->getVar("marca"),
             "nos" => $this->request->getVar("nos"),
@@ -171,11 +173,13 @@ class Home extends BaseController
         
                 $pageCount = $pdf->setSourceFile(FCPATH.'pf.pdf');
                 $pageId = $pdf->importPage(1, PdfReader\PageBoundaries::MEDIA_BOX);
-        
+                $pdf->SetFont('Helvetica');
                 $pdf->addPage();
                 $pdf->useTemplate($pageId,['adjustPageSize' => true]);
                 $pdf->SetXY(10, 10);
                 $pdf->Image($img_file,null,null,20,20);
+                $pdf->SetXY(140, 48);
+                $pdf->Write(4, $p["poliza"]);
                 $this->response->setHeader('Content-Type', 'application/pdf');
                 $pdf->Output('I', 'u.pdf');
 
@@ -231,6 +235,7 @@ class Home extends BaseController
     public function verify($code){
         $polizaModel = new \App\Models\PolizaModel();
         $p = $polizaModel->where('md5(poliza)',$code)->first();
-        print_r($p);
+        print_r(md5($code));
+        return view("validacion", ["poliza" => $p]);
     }
 }

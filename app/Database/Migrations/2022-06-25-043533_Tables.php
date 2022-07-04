@@ -35,8 +35,8 @@ class Tables extends Migration
                 'constraint' => '20',
             ],
             'anunciado' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '20',
+                'type'       => 'TEXT',
+
             ],
             'lugar' => [
                 'type'       => 'VARCHAR',
@@ -86,8 +86,8 @@ class Tables extends Migration
                 'type' => 'text',
             ],
             'embarcado_por' => [
-                'type' => 'DECIMAL',
-                'constraint' => "8,2"
+                'type' => 'varchar',
+                'constraint' => "100"
             ],
             'create_at'=> [
                 'type'      => 'timestamp',

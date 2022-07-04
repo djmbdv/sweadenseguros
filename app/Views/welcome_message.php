@@ -95,7 +95,6 @@
 </nav>
 <!-- Navbar -->
 <div class="container" ng-app="polizas">
-
   <div class="row" ng-controller="polizaController" data-ng-init="reset()">
   <div class="col-3">
   <h2>Historial</h2>
@@ -210,9 +209,9 @@
                   </select>
     <label class="form-label select-label" for="hola">SOBRE EL</label>
     </div>
-  <div class="form-outline col  m-1 mb-4 datepicker">
-    <input type="text" id="form6Example5" ng-model="poliza.anunciado" class="form-control" required/>
-    <label class="form-label" for="form6Example5">ANUNCIADO PARA:</label>
+  <div class="form-outline col  m-1 mb-4">
+    <input type="date" id="anunciado" ng-model="poliza.anunciado" class="form-control" required/>
+    <label class="form-label" for="anunciado">ANUNCIADO PARA:</label>
   </div>
   </div>
   <div class="row gp">
@@ -369,7 +368,7 @@ app.controller("polizaController", function ($scope, $http) {
       desde: "<?= isset($poliza)?$poliza["desde"]:""?>",
       hasta: "<?= isset($poliza)?$poliza["hasta"]:""?>",
       sobre:"<?= isset($poliza)?$poliza["sobre"]:""?>",
-      anunciado: "<?= isset($poliza)?$poliza["anunciado"]:""?>",
+      anunciado: new Date("<?= $poliza["anunciado"]??""?>"),
       lugar: "<?= isset($poliza)?$poliza["lugar"]:""?>",
       marca: "<?= isset($poliza)?$poliza["marca"]:""?>",
       nos: <?= isset($poliza)?$poliza["nos"]:"''"?>,
@@ -392,10 +391,9 @@ app.controller("polizaController", function ($scope, $http) {
         console.log($scope.poliza);
         const onSuccess =  (data, status, headers, config)=> {
             alert(data.data.message);
-            if(data.data.message !== "guardado"){
-              console.log(data.data)
-              window.location = "/"+data.data.data.k;
-            }
+
+              window.location = "/poliza/"+$scope.poliza.poliza;
+
         };
         var onError = function (data, status, headers, config) {
             alert('Error');
