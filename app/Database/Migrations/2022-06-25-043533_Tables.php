@@ -68,11 +68,11 @@ class Tables extends Migration
             ],
             'cscvs' => [
                 'type' => 'DECIMAL',
-                'constraint' => "8,2"
+                'constraint' => "8,3"
             ],
             'ssc' => [
                 'type' => 'DECIMAL',
-                'constraint' => "8,2"
+                'constraint' => "8,3"
             ],
             'iva' => [
                 'type' => 'DECIMAL',

@@ -84,7 +84,7 @@
           aria-labelledby="navbarDropdownMenuAvatar"
         >
           <li>
-            <a class="dropdown-item" href="#">Salir</a>
+            <a class="dropdown-item" href="/logout">Salir</a>
           </li>
         </ul>
       </div>
@@ -105,9 +105,17 @@
   <div class="row">
     <?php foreach($polizas as $p): ?>
     <div>
-      <a href="/poliza/<?=$p["poliza"] ?>"><?= $p["poliza"] ?></a>
+      <a href="/poliza/<?=$p["poliza"] ?>"><?=$p["poliza"]." ".date("d/m/Y", strtotime( $p["create_at"])) ?></a>
     </div>
     <?php endforeach;?>
+    <div>
+    <?php if($page): ?>
+    <a class="btn" href="?page=<?= $page - 1 ?>"><</a>
+    <?php endif; ?>
+    <?php if(count($polizas) > 9): ?>
+      <a class="btn" href="?page=<?= $page + 1 ?>">></a>
+    <?php endif; ?>
+    </div>
   </div>
   </div>
 <div class="col-9">
@@ -281,7 +289,7 @@
         <td>S.S.C. ({{poliza.ssc*100 |number:2}}%)</td><td ng-bind="ssc=(prima_neta * poliza.ssc)| number:2"></td>
       </tr>
       <tr>
-        <td>DERECHOS DE EMISION ({{poliza.dde |number:2}}%)</td><td ng-bind="dde=(prima_neta * poliza.dde)| number:2"></td>
+        <td>DERECHOS DE EMISION</td><td ng-bind="dde=(poliza.dde)| number:2"></td>
       </tr>
       <tr>
         <td>SUBTOTAL</td><td ng-bind="subtotal=(dde+prima_neta+cscvs+ssc) | number:2"></td>
@@ -374,10 +382,10 @@ app.controller("polizaController", function ($scope, $http) {
       nos: <?= isset($poliza)?$poliza["nos"]:"''"?>,
       peso: <?= isset($poliza)?$poliza["peso"]:"''"?>,
       bultos: <?= isset($poliza)?$poliza["bultos"]:"''"?>,
-      contenido: "<?= isset($poliza)?$poliza["contenido"]:""?>",
+      contenido: <?= json_encode(isset($poliza)?$poliza["contenido"]:"")?>,
       asegurado: <?= isset($poliza)?$poliza["asegurado"]:"''"?>,
       porcentaje: <?= isset($poliza)?$poliza["porcentaje"]:"''"?>,
-      observaciones:"<?= isset($poliza)?$poliza["observaciones"]:""?>",
+      observaciones:<?= json_encode( isset($poliza)?$poliza["observaciones"]:"") ?>,
       embarcado_por: "<?= isset($poliza)?$poliza["embarcado_por"]:""?>",
       iva: <?= isset($poliza)?$poliza["iva"]:"''"?>,
       ssc: <?= isset($poliza)?$poliza["ssc"]:"''"?>,
