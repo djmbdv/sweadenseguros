@@ -143,9 +143,9 @@ class Home extends BaseController
         $pdf->SetXY(200, 44);
         $pdf->Write(6, $p["a_favor"]);
         $pdf->SetXY(170, 50);
-        $pdf->Write(6, $p["desde"]);
+        $pdf->Write(6,  iconv('UTF-8', 'ISO-8859-1', $p["desde"]));
         $pdf->SetXY(30, 56);
-        $pdf->Write(6, $p["hasta"]);
+        $pdf->Write(6, iconv('UTF-8', 'ISO-8859-1', $p["hasta"]));
         $pdf->SetXY(180, 56);
         $pdf->Write(6, $p["sobre"]);
         $pdf->SetXY(45, 61);
@@ -153,7 +153,7 @@ class Home extends BaseController
         $pdf->SetXY(150, 61);
         $pdf->Write(6, $p["a_favor"]);
         $pdf->SetXY(150, 67);
-        $pdf->Write(6, $p["lugar"]);
+        $pdf->Write(6, iconv('UTF-8', 'ISO-8859-1',$p["lugar"]));
         $pdf->SetFont('Courier');
         $pdf->SetFontSize(8);
         $pdf->SetXY(15, 85);
@@ -205,7 +205,7 @@ class Home extends BaseController
          ($prima + $p['dde'] + $p['ssc']*$prima + $p["cscvs"]*$prima),2 ));
         $pdf->SetFont("Helvetica","");
         $pdf->SetXY(232, 85);
-        $pdf->Multicell(100,6, $p["observaciones"]);
+        $pdf->Multicell(100,6, iconv('UTF-8', 'ISO-8859-1', $p["observaciones"]));
         $pdf->SetFont("Helvetica","b");
         $pdf->SetXY(50,146);
         $pdf->Write(6, $p["embarcado_por"]);
