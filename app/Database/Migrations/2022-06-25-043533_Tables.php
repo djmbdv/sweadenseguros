@@ -44,14 +44,14 @@ class Tables extends Migration
             ],
             'marca' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '20',
+                'constraint' => '80',
             ],
             'nos' => [
                 'type' => 'INT',
             ],
             'peso' => [
                 'type' => 'DECIMAL',
-                'constraint' => "8,2"
+                'constraint' => "12,2"
             ],
             'bultos' => [
                 'type' => 'INT',
@@ -60,7 +60,8 @@ class Tables extends Migration
                 'type' => 'text',
             ],
             'asegurado' => [
-                'type' => 'INT',
+                'type' => 'DECIMAL',
+                'constraint' => "12,2"
             ],
             'porcentaje' => [
                 'type' => 'DECIMAL',

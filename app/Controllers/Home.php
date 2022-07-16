@@ -125,7 +125,7 @@ class Home extends BaseController
 
         $pageCount = $pdf->setSourceFile(FCPATH.'formato_sweaden.pdf');
         $pageId = $pdf->importPage(1, PdfReader\PageBoundaries::MEDIA_BOX);
-        $prima = $p["porcentaje"] * $p["asegurado"] / 100;
+        $prima = $p["porcentaje"] * $p["asegurado"] / 100.0;
 
 
         $pdf->addPage();
@@ -156,14 +156,14 @@ class Home extends BaseController
         $pdf->Write(6, iconv('UTF-8', 'ISO-8859-1',$p["lugar"]));
         $pdf->SetFont('Courier');
         $pdf->SetFontSize(8);
-        $pdf->SetXY(15, 85);
-        $pdf->Write(6, $p["marca"]);
+        $pdf->SetXY(10, 85);
+        $pdf->MultiCell(30,6,iconv('UTF-8', 'ISO-8859-1', $p["marca"]),0,'C');
         $pdf->SetXY(43, 85);
-        $pdf->Write(6, $p["nos"]);
+        $pdf->Cell(12,6, $p["nos"],0,1,'C');
         $pdf->SetXY(59, 85);
-        $pdf->Write(6, $p["peso"]);
+        $pdf->Cell(18,6, $p["peso"],0,1,'C');
         $pdf->SetXY(80, 85);
-        $pdf->Write(6, $p["bultos"]);
+        $pdf->Cell(20,6, $p["bultos"],0,1,'C');
         $pdf->SetXY(105, 85);
         $pdf->SetFont('Helvetica');
         $pdf->SetFontSize(7);
@@ -174,7 +174,7 @@ class Home extends BaseController
         $pdf->SetFont('Courier');
         $pdf->SetFontSize(8);
         $pdf->SetXY(145, 85);
-        $pdf->Write(6, $p["asegurado"]);
+        $pdf->Cell(40,6, $p["asegurado"],0,1,'C');
         $pdf->SetXY(186, 85);
         $pdf->Write(6, "PRIMA");
         $pdf->SetXY(186, 91);
@@ -190,19 +190,19 @@ class Home extends BaseController
         $pdf->Write(6, "TOTAL");
         $pdf->SetFont("Courier","");
         $pdf->SetXY(202, 85);
-        $pdf->Write(6, number_format($prima,2));
+        $pdf->Cell(25,6, number_format($prima,2),0,1,'R');
         $pdf->SetXY(202, 91);
-        $pdf->Write(6,number_format($p['cscvs']*$prima,2));
+        $pdf->Cell(25,6,number_format($p['cscvs']*$prima,2),0,1,'R');
         $pdf->SetXY(202, 97);
-        $pdf->Write(6,number_format($p['ssc']*$prima,2));
+        $pdf->Cell(25,6,number_format($p['ssc']*$prima,2),0,1,'R');
         $pdf->SetXY(202, 103);
-        $pdf->Write(6, number_format($p['dde'],2));
+        $pdf->Cell(25,6, number_format($p['dde'],2),0,1,'R');
         $pdf->SetXY(202, 109);
-        $pdf->Write(6, number_format($p['iva']*($prima + $p['dde'] + $p['ssc']*$prima + $p["cscvs"]*$prima),2));
+        $pdf->Cell(25,6, number_format($p['iva']*($prima + $p['dde'] + $p['ssc']*$prima + $p["cscvs"]*$prima),2),0,1,'R');
         $pdf->SetXY(202, 117);
         $pdf->SetFont("Courier","b");
-        $pdf->Write(6, number_format($p['iva']*($prima + $p['dde'] + $p['ssc']*$prima + $p["cscvs"]*$prima) +
-         ($prima + $p['dde'] + $p['ssc']*$prima + $p["cscvs"]*$prima),2 ));
+        $pdf->Cell(25,6, number_format($p['iva']*($prima + $p['dde'] + $p['ssc']*$prima + $p["cscvs"]*$prima) +
+         ($prima + $p['dde'] + $p['ssc']*$prima + $p["cscvs"]*$prima),2 ),0,1,'R');
         $pdf->SetFont("Helvetica","");
         $pdf->SetXY(232, 85);
         $pdf->Multicell(100,6, iconv('UTF-8', 'ISO-8859-1', $p["observaciones"]));
@@ -221,7 +221,7 @@ class Home extends BaseController
     public function pdf2($polizaId){
         $img_file = uniqid().'.png';
 
-        $dataURI    = (new QRCode)->render("https://".base_url()."/verify/".md5($polizaId));
+        $dataURI    = (new QRCode)->render(base_url()."/verify/".md5($polizaId));
         $dataPieces = explode(',',$dataURI);
         $encodedImg = $dataPieces[1];
         $decodedImg = base64_decode($encodedImg);
