@@ -215,7 +215,6 @@ class Home extends BaseController
                         unlink($img_file);
                     }
                 }
-        
     }
 
     public function pdf2($polizaId){
@@ -257,8 +256,7 @@ class Home extends BaseController
 
     }
     public function pdf3($polizaId){        $img_file = 'tempimg.png';
-
-        $dataURI    = (new QRCode)->render("https://".base_url()."/verify/".md5($polizaId));
+        $dataURI    = (new QRCode)->render(base_url()."/verify/".md5($polizaId));
         $dataPieces = explode(',',$dataURI);
         $encodedImg = $dataPieces[1];
         $decodedImg = base64_decode($encodedImg);
@@ -299,10 +297,10 @@ class Home extends BaseController
          $this->response->setJSON(true);
         echo json_encode($polizas);
     }
+
     public function verify($code){
         $polizaModel = new \App\Models\PolizaModel();
         $p = $polizaModel->where('md5(poliza)',$code)->first();
-        print_r(md5($code));
         return view("validacion", ["poliza" => $p]);
     }
 }

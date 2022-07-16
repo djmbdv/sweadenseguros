@@ -22,6 +22,14 @@
     margin-bottom: 10px;
     padding-top: 14px;
 }
+.col-title{
+  font-weight: bold;
+  color: blue;
+}
+.row{
+  padding: 10px;
+  border-bottom: 1px solid;
+}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
@@ -36,26 +44,26 @@
 <img
           src="/icon.jpg"
           height="200"
-          alt="MDB Logo"
+          alt="SWEADEN"
           loading="lazy"
         />
       </a>
 
 <div  style="border: 1px solid; padding: 15%;">
 <div class="row">
-    <div class="col">INICIO VIGENCIA:</div><div class="col"></div><div class="col">FIN VIGENCIA</div><div class="col"></div>
+    <div class="col col-title">INICIO VIGENCIA:</div><div class="col"><?=  date("d/m/Y", strtotime( $poliza["anunciado"])) ?></div><div class="col col-title">FIN VIGENCIA</div><div class="col"></div>
 </div>
 <div class="row">
-    <div class="col">FECHA EMISION:</div><div class="col"></div><div class="col">ESTADO:</div><div class="col"></div>
+    <div class="col col-title">FECHA EMISION:</div><div class="col"><?=  date("d/m/Y", strtotime( $poliza["create_at"])) ?></div><div class="col col-title">ESTADO:</div><div class="col"></div>
 </div>
 <div class="row">
-    <div class="col">ASEGURADO:</div><div class="col"><?= $poliza["asegurado"] ?? ""?></div>
+    <div class="col col-title">ASEGURADO:</div><div class="col"><?= $poliza["a_favor"] ?></div>
 </div>
 <div class="row">
-    <div class="col">CONTRATANTE:</div><div class="col"></div>
+    <div class="col col-title">CONTRATANTE:</div><div class="col"></div>
 </div>
 <div class="row">
-    <div class="col">SUMA ASEGURADA:</div><div class="col"></div><div class="col">CUOTA INICIAL:</div><div class="col"></div>
+    <div class="col col-title">SUMA ASEGURADA:</div><div class="col"><?= $poliza["asegurado"] ?? ""?></div><div class="col col-title">CUOTA INICIAL:</div><div class="col"></div>
 </div>
 </div>
 </body>
