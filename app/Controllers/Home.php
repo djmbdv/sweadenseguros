@@ -210,7 +210,7 @@ class Home extends BaseController
         $pdf->SetXY(50,146);
         $pdf->Write(6, $p["embarcado_por"]);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $pdf->Output('I', 'generated.pdf');
+        $pdf->Output('I', 'poliza'.$p["poliza"].'.pdf');
                         //  Delete image from server
                         unlink($img_file);
                     }
