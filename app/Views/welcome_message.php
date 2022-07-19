@@ -104,8 +104,8 @@
     <poliza-list></poliza-list>
   <div class="row">
     <?php foreach($polizas as $p): ?>
-    <div>
-      <a href="/poliza/<?=$p["poliza"] ?>"><?=$p["poliza"]." ".date("d/m/Y", strtotime( $p["create_at"])) ?></a>
+    <div class="small">
+      <a href="/poliza/<?=$p["poliza"] ?>"><?=date("d/m/Y", strtotime( $p["create_at"]))." ".$p["poliza"]." ".$p["aplicacion"]?></a>
     </div>
     <?php endforeach;?>
     <div>
