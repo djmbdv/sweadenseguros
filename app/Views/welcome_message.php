@@ -390,6 +390,7 @@ app.controller("polizaController", function ($scope, $http) {
       iva: <?= isset($poliza)?$poliza["iva"]:"''"?>,
       ssc: <?= isset($poliza)?$poliza["ssc"]:"''"?>,
       dde: <?= isset($poliza)?$poliza["dde"]:"''"?>,
+      cscvs: <?= isset($poliza)?$poliza["cscvs"]:"''"?>
     };
 
     $scope.reset = ()=>{
