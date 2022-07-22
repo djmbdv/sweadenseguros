@@ -106,17 +106,21 @@ class Home extends BaseController
     public function pdf1($polizaId){
         
         $img_file = 'tempimg.png';
-
+        $img_file_v = uniqid().'.png';
         $dataURI    = (new QRCode)->render("FIRMADO POR SWEADEN");
         $dataPieces = explode(',',$dataURI);
+        $dataURIV    = (new QRCode)->render(base_url()."/verify/".md5($polizaId));
+        $dataPiecesV = explode(',',$dataURIV);
         $encodedImg = $dataPieces[1];
+        $encodedImgV = $dataPiecesV[1];
         $decodedImg = base64_decode($encodedImg);
+        $decodedImgV = base64_decode($encodedImgV);
 
         //  Check if image was properly decoded
-        if( $decodedImg!==false )
+        if( $decodedImg!==false && $decodedImgV )
         {
             //  Save image to a temporary location
-            if( file_put_contents($img_file,$decodedImg)!==false )
+            if( file_put_contents($img_file,$decodedImg)!==false && file_put_contents($img_file_v,$decodedImgV)!==false)
             {
 
         $polizaModel = new \App\Models\PolizaModel();
@@ -132,6 +136,8 @@ class Home extends BaseController
         $pdf->useTemplate($pageId,['adjustPageSize' => true]);
         $pdf->SetXY(250, 158);
         $pdf->Image($img_file,null,null,20,20);
+        $pdf->SetXY(55, 16);
+        $pdf->Image($img_file_v,null,null,25,25);
         $pdf->SetFont('Helvetica');
         $pdf->SetXY(30, 36);
         $pdf->SetFontSize(10);
@@ -213,6 +219,7 @@ class Home extends BaseController
         $pdf->Output('I', 'poliza'.$p["poliza"].'.pdf');
                         //  Delete image from server
                         unlink($img_file);
+                        unlink($img_file_v);
                     }
                 }
     }

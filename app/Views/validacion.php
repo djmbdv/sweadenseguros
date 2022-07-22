@@ -51,10 +51,10 @@
 
 <div  style="border: 1px solid; padding: 15%;">
 <div class="row">
-    <div class="col col-title">INICIO VIGENCIA:</div><div class="col"><?=  date("d/m/Y", strtotime( $poliza["anunciado"])) ?></div><div class="col col-title">FIN VIGENCIA</div><div class="col"></div>
+    <div class="col col-title">INICIO VIGENCIA:</div><div class="col"><?=  $poliza["lugar"] ?></div><div class="col col-title">FIN VIGENCIA</div><div class="col"></div>
 </div>
 <div class="row">
-    <div class="col col-title">FECHA EMISION:</div><div class="col"><?=  date("d/m/Y", strtotime( $poliza["create_at"])) ?></div><div class="col col-title">ESTADO:</div><div class="col"></div>
+    <div class="col col-title">FECHA EMISION:</div><div class="col"><?=  $poliza["lugar"] ?></div><div class="col col-title">ESTADO:</div><div class="col"></div>
 </div>
 <div class="row">
     <div class="col col-title">ASEGURADO:</div><div class="col"><?= $poliza["a_favor"] ?></div>
