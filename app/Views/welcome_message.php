@@ -57,7 +57,7 @@
       </a>
       <!-- Left links -->
       <ul class="navbar-nav text-center px-4 me-auto mb-2 mb-lg-0">
-        <h3 style="color: white;">Seawden Compania de Seguros S.A.</h3>
+        <h3 style="color: white;">Seawden Compañía de Seguros S.A.</h3>
       </ul>
       <!-- Left links -->
     </div>
