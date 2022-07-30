@@ -4,7 +4,7 @@ use CodeIgniter\Model;
   
 class PolizaModel extends Model{
     protected $table = 'polizas';
-    protected $primaryKey = 'poliza';
+    protected $primaryKey = 'aplicacion';
     
     protected $allowedFields = [
         'poliza',
