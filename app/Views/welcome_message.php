@@ -408,7 +408,7 @@ app.controller("polizaController", function ($scope, $http) {
         const onSuccess =  (data, status, headers, config)=> {
             alert(data.data.message);
 
-              window.location = "/poliza/"+$scope.poliza.poliza;
+            //  window.location = "/poliza/"+$scope.poliza.aplicacion;
 
         };
         var onError = function (data, status, headers, config) {
