@@ -397,7 +397,7 @@ app.controller("polizaController", function ($scope, $http) {
       ssc: <?= isset($poliza)?$poliza["ssc"]:"''"?>,
       dde: <?= isset($poliza)?$poliza["dde"]:"''"?>,
       cscvs: <?= isset($poliza)?$poliza["cscvs"]:"''"?>,
-      cscvs: <?= json_encode(isset($poliza)?$poliza["estado"]:"''" )?>
+      estado: <?= json_encode(isset($poliza)?$poliza["estado"]:"''" )?>
     };
 
     $scope.reset = ()=>{
