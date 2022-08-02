@@ -66,7 +66,7 @@ class Home extends BaseController
         if(is_null($p))
             $k = $polizaModel->insert($data);
         else {
-            $poliza = $this->request->getVar('poliza');
+            $poliza = $this->request->getVar('aplicacion');
             $data = [
                 "aplicacion" => $this->request->getVar('aplicacion'),
                 "a_favor" => $this->request->getVar('a_favor'),
@@ -100,8 +100,8 @@ class Home extends BaseController
         }
         $r = [
             "data"=> $data,
-            "message"=>"Ingresado nuevo #".$data["poliza"],
-            "k" => $data["poliza"]
+            "message"=>"Ingresado nuevo #".$data["aplicacion"],
+            "k" => $data["aplicacion"]
         ];
         return $this->response->setJSON($r);
     }
