@@ -24,6 +24,7 @@ class PolizaModel extends Model{
         'porcentaje',
         'observaciones',
         'embarcado_por',
+        'estado',
         'create_at',
         'update_at',
         'cscvs',
