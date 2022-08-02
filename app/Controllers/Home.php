@@ -59,9 +59,10 @@ class Home extends BaseController
             "ssc" => $this->request->getVar("ssc"),
             "iva" => $this->request->getVar("iva"),
             "dde" => $this->request->getVar("dde"),
+            "estado" => $this->request->getVar("estado");
             "observaciones" => $this->request->getVar("observaciones")
         ];
-        $p = $polizaModel->find($data["poliza"]);
+        $p = $polizaModel->find($data["aplicacion"]);
         if(is_null($p))
             $k = $polizaModel->insert($data);
         else {

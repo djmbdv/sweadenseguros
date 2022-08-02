@@ -321,9 +321,9 @@
   </div>
   <div class="tab-pane fade" id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
   <div class="row pt-4">
-  <div class="col text-center"><a href="/pdf1/<?=$poliza["poliza"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento</a></div>
-  <div class="col text-center"><a href="/pdf2/<?=$poliza["poliza"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>FRONTAL</a></div>
-  <div class="col text-center"><a href="/pdf3/<?=$poliza["poliza"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>REVERSO</a></div>
+  <div class="col text-center"><a href="/pdf1/<?=$poliza["aplicacion"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>Documento</a></div>
+  <div class="col text-center"><a href="/pdf2/<?=$poliza["aplicacion"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>FRONTAL</a></div>
+  <div class="col text-center"><a href="/pdf3/<?=$poliza["aplicacion"]??""?>"><i class="fa-solid fa-4x fa-file-pdf"></i>REVERSO</a></div>
 </div>
 </div>
 </div>
