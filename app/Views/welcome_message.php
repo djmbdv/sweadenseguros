@@ -24,7 +24,6 @@
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-
 </head>
 <body>
   <!-- Navbar -->
@@ -268,6 +267,13 @@
     <input type="number" id="dde" step="0.01" min="0" ng-model="poliza.dde" class="form-control" />
     <label class="form-label"  for="dde">Derechos de Emision</label>
   </div>
+  <div class="form-control col  m-1 mb-4">
+    <select  ng-model="poliza.estado" class="select" required>
+      <option>No pagado</option>
+      <option>Pagado</option>
+    </select>
+    <label class="form-label select-label"  for="estado">Estado</label>
+  </div>
   </div>
   <div class="row gp">
     <label>PRIMA</label>
@@ -390,7 +396,8 @@ app.controller("polizaController", function ($scope, $http) {
       iva: <?= isset($poliza)?$poliza["iva"]:"''"?>,
       ssc: <?= isset($poliza)?$poliza["ssc"]:"''"?>,
       dde: <?= isset($poliza)?$poliza["dde"]:"''"?>,
-      cscvs: <?= isset($poliza)?$poliza["cscvs"]:"''"?>
+      cscvs: <?= isset($poliza)?$poliza["cscvs"]:"''"?>,
+      cscvs: <?= isset($poliza)?$poliza["estado"]:"''"?>
     };
 
     $scope.reset = ()=>{
