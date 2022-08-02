@@ -269,8 +269,8 @@
   </div>
   <div class="form-control col  m-1 mb-4">
     <select  ng-model="poliza.estado" class="select" required>
-      <option>No pagado</option>
-      <option>Pagado</option>
+      <option value="No pagado">No pagado</option>
+      <option value="Pagado">Pagado</option>
     </select>
     <label class="form-label select-label"  for="estado">Estado</label>
   </div>
