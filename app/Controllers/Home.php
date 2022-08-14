@@ -310,6 +310,7 @@ class Home extends BaseController
     public function verify($code){
         $polizaModel = new \App\Models\PolizaModel();
         $p = $polizaModel->where('md5(aplicacion)',$code)->first();
-        return view("validacion", ["poliza" => $p]);
+        $prima = $p["porcentaje"] * $p["asegurado"] / 100.0;
+        return view("validacion", ["poliza" => $p, "prima" => $prima]);
     }
 }

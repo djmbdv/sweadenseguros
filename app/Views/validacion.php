@@ -63,7 +63,10 @@
     <div class="col col-title">CONTRATANTE:</div><div class="col"></div>
 </div>
 <div class="row">
-    <div class="col col-title">SUMA ASEGURADA:</div><div class="col"><?= $poliza["asegurado"] ?? ""?></div><div class="col col-title">CUOTA INICIAL:</div><?= number_format($poliza["porcentaje"] * $poliza["asegurado"] / 100.0,2)?><div class="col"></div>
+    <div class="col col-title">SUMA ASEGURADA:</div><div class="col"><?= $poliza["asegurado"] ?? ""?></div>
+    <div class="col col-title">CUOTA INICIAL:</div>
+    <div class="col"><?= number_format($poliza['iva']*($prima + $poliza['dde'] + $poliza['ssc']*$prima + $poliza["cscvs"]*$prima) +
+         ($prima + $poliza['dde'] + $poliza['ssc']*$prima + $poliza["cscvs"]*$prima),2 )?></div>
 </div>
 </div>
 </body>
